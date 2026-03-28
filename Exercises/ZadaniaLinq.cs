@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using LinqConsoleLab.PL.Data;
 using LinqConsoleLab.PL.Models;
 
@@ -53,7 +54,11 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Zadanie03_StudenciPosortowani()
     {
-        throw Niezaimplementowano(nameof(Zadanie03_StudenciPosortowani));
+        var res = from s in DaneUczelni.Studenci
+            orderby s.Imie ascending , s.Nazwisko ascending 
+            select $"{s.NumerIndeksu} {s.Imie} {s.Nazwisko}";
+
+        return res;
     }
 
     /// <summary>
@@ -68,8 +73,18 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Zadanie04_PierwszyPrzedmiotAnalityczny()
     {
-        throw Niezaimplementowano(nameof(Zadanie04_PierwszyPrzedmiotAnalityczny));
+        var res = from p in DaneUczelni.Przedmioty
+            where p.Id == 1
+            select $"{p.Nazwa} {p.DataStartu}";
+        if (res == null)
+        {
+            Console.WriteLine("Nie znaleziono żadnych pozycji w kategorii Analityka.");
+        }
+        
+        return res;
     }
+    
+    
 
     /// <summary>
     /// Zadanie:
@@ -85,7 +100,13 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Zadanie05_CzyIstniejeNieaktywneZapisanie()
     {
-        throw Niezaimplementowano(nameof(Zadanie05_CzyIstniejeNieaktywneZapisanie));
+        bool exists = (from z in DaneUczelni.Zapisy
+            where z.CzyAktywny == false 
+            select z).Any();
+
+        string res = exists ? "Tak" : "Nie";
+        
+        return new string[]{res};
     }
 
     /// <summary>
@@ -100,7 +121,13 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Zadanie06_CzyWszyscyProwadzacyMajaKatedre()
     {
-        throw Niezaimplementowano(nameof(Zadanie06_CzyWszyscyProwadzacyMajaKatedre));
+        bool exists = (from p in DaneUczelni.Prowadzacy
+            where p.Katedra == null
+            select p).Any();
+        
+        string res = exists ?  "Nie" : "Tak";
+        
+        return new string[]{res};
     }
 
     /// <summary>
